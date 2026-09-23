@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - College Events</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        🎓 College Events
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/events">Events</a>
+        <a href="/register">Register</a>
+        <a href="/admin/dashboard">Dashboard</a>
+    </nav>
+
+</header>
+
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>Admin Dashboard</h1>
+
+        <p>
+            Manage college events, students and certificates.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="features">
+
+    <h2>Certificate Management</h2>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+
+            <div class="icon">📜</div>
+
+            <h3>Student Certificate</h3>
+
+            <p>
+                Certificate generated for:
+                <strong>Nidhi Kamble</strong>
+            </p>
+
+            <p>
+                Event:
+                <strong>AI Workshop</strong>
+            </p>
+
+            <a href="/download-certificate"
+               class="btn">
+                📥 Download Certificate
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <p>
+        © 2026 College Event Management System
+    </p>
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>College Event Management</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <header class="navbar">
+
+        <div class="logo">
+            🎓 College Events
+        </div>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/events">Events</a>
+            <a href="/register">Register</a>
+            <a href="/admin/login">Admin</a>
+        </nav>
+
+    </header>
+
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>College Event Management System</h1>
+
+            <p>
+                Discover college events, register for events,
+                and stay connected with campus activities.
+            </p>
+
+            <div class="buttons">
+
+                <a href="/events" class="btn">
+                    View Events
+                </a>
+
+                <a href="/register" class="btn secondary">
+                    Register Now
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===== FEATURES SECTION ===== -->
+    <section class="features">
+
+        <h2>Our Features</h2>
+
+        <div class="feature-grid">
+
+            <!-- College Events -->
+            <div class="feature-card">
+
+                <div class="icon">📅</div>
+
+                <h3>College Events</h3>
+
+                <p>
+                    View upcoming workshops, seminars,
+                    competitions and other college events.
+                </p>
+
+                <a href="/events" class="feature-btn">
+                    View Events
+                </a>
+
+            </div>
+
+
+            <!-- Student Registration -->
+            <div class="feature-card">
+
+                <div class="icon">📝</div>
+
+                <h3>Student Registration</h3>
+
+                <p>
+                    Register easily for college events
+                    using our simple registration form.
+                </p>
+
+                <a href="/register" class="feature-btn">
+                    Register Now
+                </a>
+
+            </div>
+
+
+            <!-- Admin Management -->
+            <div class="feature-card">
+
+                <div class="icon">🔐</div>
+
+                <h3>Admin Management</h3>
+
+                <p>
+                    Administrators can manage students
+                    and college events.
+                </p>
+
+                <a href="/admin/login" class="feature-btn">
+                    Admin Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+
+        <p>
+            © 2026 College Event Management System
+        </p>
+
+    </footer>
+
+
+</body>
+</html>

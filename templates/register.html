@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">🎓 College Events</div>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/events">Events</a>
+            <a href="/register">Register</a>
+            <a href="/admin/login">Admin</a>
+        </nav>
+    </header>
+
+    <section class="form-section">
+
+        <div class="form-card">
+
+            <h1>Student Registration</h1>
+
+            <p>Register for college events and activities.</p>
+
+            <form method="POST">
+
+                <label>Name</label>
+                <input type="text" name="name" required>
+
+                <label>Email</label>
+                <input type="email" name="email" required>
+
+                <label>Phone</label>
+                <input type="text" name="phone" required>
+
+                <label>Course</label>
+                <input type="text" name="course" required>
+
+                <label>Year</label>
+                <input type="text" name="year" required>
+
+                <button type="submit">Register</button>
+
+            </form>
+
+            <a href="/" class="back-link">← Back to Home</a>
+
+        </div>
+
+    </section>
+
+</body>
+</html>

@@ -1,11 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, session, send_file
 import sqlite3
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+
 
 app = Flask(
     __name__,
     static_folder="static",
     static_url_path="/static"
 )
+
+# Secret key for student session
+app.secret_key = "college-event-secret-key"
+
 
 # ---------------- DATABASE ----------------
 
@@ -97,6 +105,10 @@ def register():
         """, (name, email, phone, course, year))
 
         conn.commit()
+
+        # Save student's name in session
+        session["student_name"] = name
+
         conn.close()
 
         return """
@@ -158,9 +170,15 @@ def admin_login():
         )
 
     return render_template("admin_login.html")
+
+
+# ---------------- ADD EVENT ----------------
+
 @app.route("/add_event", methods=["GET", "POST"])
 def add_event():
+
     if request.method == "POST":
+
         name = request.form["name"]
         date = request.form["date"]
         time = request.form["time"]
@@ -169,7 +187,11 @@ def add_event():
         conn = get_db_connection()
 
         conn.execute(
-            "INSERT INTO events (name, date, time, venue) VALUES (?, ?, ?, ?)",
+            """
+            INSERT INTO events
+            (name, date, time, venue)
+            VALUES (?, ?, ?, ?)
+            """,
             (name, date, time, venue)
         )
 
@@ -179,6 +201,8 @@ def add_event():
         return redirect("/events")
 
     return render_template("add_event.html")
+
+
 # ---------------- ADMIN DASHBOARD ----------------
 
 @app.route("/admin/dashboard")
@@ -201,8 +225,13 @@ def admin_dashboard():
         students=students,
         events=events
     )
+
+
+# ---------------- DELETE EVENT ----------------
+
 @app.route("/delete_event/<int:event_id>")
 def delete_event(event_id):
+
     conn = get_db_connection()
 
     conn.execute(
@@ -212,17 +241,107 @@ def delete_event(event_id):
 
     conn.commit()
     conn.close()
+
     return redirect("/admin/dashboard")
-# ---------------- START APPLICATION ----------------
+
+
+# ---------------- DYNAMIC CERTIFICATE ----------------
 
 @app.route("/download-certificate")
 def download_certificate():
-    return send_from_directory(
-        "certificates",
-        "Nidhi_Kamble_Certificate.pdf",
-        as_attachment=True
+
+    # Get the currently registered student's name
+    student_name = session.get("student_name")
+
+    if not student_name:
+        return """
+        <h2>Please register first.</h2>
+        <p>You need to register before downloading your certificate.</p>
+        <a href="/register">Go to Registration</a>
+        """
+
+    # Create PDF in memory
+    buffer = BytesIO()
+
+    pdf = canvas.Canvas(buffer, pagesize=A4)
+
+    width, height = A4
+
+    # Certificate title
+    pdf.setFont("Helvetica-Bold", 24)
+    pdf.drawCentredString(
+        width / 2,
+        height - 150,
+        "CERTIFICATE OF PARTICIPATION"
     )
 
+    # Main text
+    pdf.setFont("Helvetica", 14)
+    pdf.drawCentredString(
+        width / 2,
+        height - 220,
+        "This certificate is proudly presented to"
+    )
+
+    # Student name
+    pdf.setFont("Helvetica-Bold", 22)
+    pdf.drawCentredString(
+        width / 2,
+        height - 270,
+        student_name
+    )
+
+    # Workshop details
+    pdf.setFont("Helvetica", 14)
+    pdf.drawCentredString(
+        width / 2,
+        height - 330,
+        "for successfully participating in"
+    )
+
+    pdf.setFont("Helvetica-Bold", 18)
+    pdf.drawCentredString(
+        width / 2,
+        height - 370,
+        "AI Workshop"
+    )
+
+    pdf.setFont("Helvetica", 13)
+    pdf.drawCentredString(
+        width / 2,
+        height - 420,
+        "Date: 26 September 2026"
+    )
+
+    # Footer
+    pdf.setFont("Helvetica", 11)
+    pdf.drawCentredString(
+        width / 2,
+        100,
+        "College Event Management System"
+    )
+
+    pdf.save()
+
+    buffer.seek(0)
+
+    # Safe filename
+    safe_name = "".join(
+        c for c in student_name
+        if c.isalnum() or c in (" ", "_", "-")
+    ).strip()
+
+    filename = f"{safe_name}_Certificate.pdf"
+
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name=filename,
+        mimetype="application/pdf"
+    )
+
+
+# ---------------- START APPLICATION ----------------
 
 if __name__ == "__main__":
     create_database()
